@@ -5,6 +5,11 @@ while augmenting their level of focus.
 Requires: growlnotify (Mac notifier)
 =end
 
+require 'input'
+require 'message'
+require 'output'
+require 'task'
+
 MESSAGES = ["Get back to work!",
             "Are you awake?",
             "Try some coffee if you haven't already.",
