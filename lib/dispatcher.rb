@@ -5,8 +5,10 @@ while augmenting their level of focus.
 Requires: growlnotify (Mac notifier)
 =end
 
+#TODO this file used to contain the ENTIRE original program, must refactor this code 
+# out into the proper component libraries
 require 'input'
-require 'message'
+require 'growl_message'
 require 'output'
 require 'task'
 
