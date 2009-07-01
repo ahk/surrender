@@ -10,8 +10,6 @@ MESSAGES = ["Get back to work!",
             "Try some coffee if you haven't already.",
             "What is your top priority right now?"]
 BREAK_MSG = "BREAK: Rest the eyes!"
-GROWL_CMD = "growlnotify"
-GROWL_OPTS = "-s -m"
 MSG_WAIT = 10 #in minutes
 BREAK_WAIT = 29 #in minutes
 
@@ -25,7 +23,7 @@ def pick_message
 end
 
 def send_message(msg)
-  system [GROWL_CMD, GROWL_OPTS, msg].join(' ')
+  Output.send_notification msg
 end
 
 def wait_minutes(minutes)
