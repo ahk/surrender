@@ -5,12 +5,15 @@ DEPENDENCIES:
     Lang: Ruby 1.8.6 +
     Libs: Depends on the daemons gem, thought I will probably switch to daemon-kit in the future (since it's looking better every day).
 
-USAGE: ruby server.rb [args]
+USAGE: ruby surrender.rb [args]
 
 FEATURES:
-    - client/server architecture
+    - runs as daemon
     - Growl notifications
     
-UPCOMING FEATURES: 
-    - Flexible binary wrapper
-    - RSpec tests
+UPCOMING FEATURES:
+    - client server architecture
+    - simple natural language parsing for interface
+    - full gem packaging
+    - rdoc compat
+    - saving to file system

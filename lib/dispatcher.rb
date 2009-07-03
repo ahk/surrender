@@ -7,11 +7,6 @@ Requires: growlnotify (Mac notifier)
 
 #TODO this file used to contain the ENTIRE original program, must refactor this code 
 # out into the proper component libraries
-require 'input'
-require 'growl_message'
-require 'output'
-require 'task'
-
 MESSAGES = ["Get back to work!",
             "Are you awake?",
             "Try some coffee if you haven't already.",
