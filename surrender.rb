@@ -2,10 +2,10 @@ require 'rubygems'
 require 'daemons'
 
 # surrender libs
-require 'lib/input'
-require 'lib/growl_message'
-require 'lib/output'
-require 'lib/task'
+lib_dir = File.join File.dirname(__FILE__), 'lib'
+%w{input growl_message output task}.each do |lib|
+  require File.join lib_dir, lib
+end
 
-proc_file = File.join File.dirname(__FILE__), 'lib', 'dispatcher.rb'
-Daemons.run proc_file
+# fire up the dispatcher as a daemon
+Daemons.run File.join lib_dir, 'dispatcher.rb'
