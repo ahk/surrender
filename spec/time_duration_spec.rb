@@ -13,17 +13,20 @@ describe TimeDuration do
     example  = "2 hours"
     time_obj = TimeDuration.parse_duration example
     time_obj.seconds.should be_instance_of Fixnum
+    time_obj.seconds.should eql 3600
   end
   
   it "knows how to parse minutes into seconds" do
     example  = "5 minutes"
     time_obj = TimeDuration.parse_duration example
     time_obj.seconds.should be_instance_of Fixnum
+    time_obj.seconds.should eql 300
   end
   
   it "knows how to parse seconds into seconds" do
     example  = "30 seconds"
     time_obj = TimeDuration.parse_duration example
     time_obj.seconds.should be_instance_of Fixnum
+    time_obj.seconds.should eql 30
   end
 end
