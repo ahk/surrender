@@ -10,7 +10,7 @@ class Task
     @text = text
   end
   
-  def self.parse_reminder_frequency(time_string)
-    TimeDuration.parse_duration time_string
+  def self.parse_reminder_frequency(time)
+    TimeDuration.parse_duration time
   end
 end
