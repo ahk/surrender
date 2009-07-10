@@ -1,3 +1,4 @@
+require File.dirname(__FILE__) + '/spec_helper'
 require 'lib/time_duration.rb'
 
 describe TimeDuration do
