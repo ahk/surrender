@@ -10,7 +10,7 @@ module Surrender
       self.seconds == other_duration.seconds
     end
   
-    def self.parse_duration(time)
+    def self.parse(time)
       # don't parse if it's already an integer
       return self.new(time) if time.instance_of? Fixnum
     

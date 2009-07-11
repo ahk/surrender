@@ -1,42 +1,32 @@
 module Surrender
   class Dispatcher
-    #TODO this file used to contain the ENTIRE original program, must refactor this code 
-    # out into the proper component libraries
-    MESSAGES = ["Get back to work!",
-                "Are you awake?",
-                "Try some coffee if you haven't already.",
-                "What is your top priority right now?"]
-    BREAK_MSG = "BREAK: Rest the eyes!"
-    MSG_WAIT = TimeDuration.new "10 minutes"
-    BREAK_WAIT = TimeDuration.new "29 minutes"
+    attr_accessor :tasks
 
-    def self.pick_message
-      if break_time?
-        @last_break = Time.now
-        %Q("#{BREAK_MSG}")
-      else
-        %Q("#{MESSAGES[rand(MESSAGES.size - 1)]}")
-      end
+    AWARENESS_TASK = Task.new "never", "never", "10 minutes", "wake up!"
+    BREAK_TASK = Task.new "never", "never", "29 minutes", "BREAK: Rest the eyes!"
+    
+    def initialize()
+      @tasks = []
+      @tasks << AWARENESS_TASK
+      @tasks << BREAK_TASK
+      
+      @ripe_messages = []
+    end
+    
+    def harvest_messages
     end
 
-    def self.send_message(msg)
+    def send_message(msg)
       Output.send_notification msg
     end
-
-    def self.wait_minutes(minutes)
-      seconds = minutes * 60
-      sleep seconds
-    end
-
-    def self.break_time?
-      (Time.now - @last_break)/60 >= BREAK_WAIT.seconds
-    end
-
-    # main loop
-    @last_break = Time.now
-    loop do
-      send_message(pick_message)
-      wait_minutes MSG_WAIT.seconds
+    
+    # this is essentially the executable
+    def main_loop
+      loop do
+        harvest_messages
+        @ripe_messages.each {|msg| send_message msg}
+        sleep 1
+      end
     end
   end
 end
