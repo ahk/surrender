@@ -1,11 +1,14 @@
+=begin
+This script should be run while working at a computer, 
+and is intended to increase the level of self awareness in a person's day 
+while augmenting their level of focus.
+Requires: growlnotify (Mac notifier)
+=end
+
 require 'rubygems'
 require 'daemons'
 
-# surrender libs
-lib_dir = File.join File.dirname(__FILE__), 'lib'
-%w{input growl_message output task}.each do |lib|
-  require File.join lib_dir, lib
-end
-
 # fire up the dispatcher as a daemon
-Daemons.run File.join lib_dir, 'dispatcher.rb'
+lib_dir =   File.dirname(__FILE__) + '/lib'
+require     File.join( lib_dir, 'surrender' )
+Daemons.run File.join( lib_dir, 'dispatcher.rb' )

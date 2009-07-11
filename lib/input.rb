@@ -1,2 +1,4 @@
-class Input
+module Surrender
+  class Input
+  end
 end
