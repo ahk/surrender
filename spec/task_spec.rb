@@ -12,7 +12,6 @@ describe Surrender::Task do
   
   it "can parse strings into TimeDuration" do
     example = "5 minutes"
-    # FIXME is this the best way to test private methods? Should I even be doing so?
     time_obj = @task.send :parse_reminder_frequency, example
     time_obj.should be_instance_of Surrender::TimeDuration
   end
