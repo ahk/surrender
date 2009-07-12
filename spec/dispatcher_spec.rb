@@ -38,6 +38,4 @@ describe Surrender::Dispatcher do
       @dispatcher.harvest_messages.should have(@a_msg)
     end
   end
-  
-  it "should track messages concurrently, rather than serially"
 end

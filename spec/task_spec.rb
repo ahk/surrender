@@ -36,8 +36,4 @@ describe Surrender::Task do
     @task.pick_ripest_message!
     @task.message_queue.should_not include(@msg)
   end
-  
-  it "has a system for managing different message types" do
-    pending
-  end
 end
