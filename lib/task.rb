@@ -19,15 +19,23 @@ module Surrender
       @message_queue = []
     end
     
-    def pick_ripest_message!
+    def add_message(message)
+      self.message_queue << message
+    end
+    
+    def pick_ripe_messages!
       raise MessageQueueEmpty, "'#{text}' is out of messages" if message_queue.empty?
-      if has_a_ripe_message?
-        msg = self.message_queue.shift
-        queue_next_message_for msg
-        msg
-      else
-        nil
+      
+      ripe_msgs = []
+      self.message_queue.each do |msg|
+        if msg.is_ripe?
+          ripe_msgs << msg
+          queue_next_message_for msg
+        end
       end
+      
+      self.message_queue -= ripe_msgs
+      ripe_msgs
     end
   
     private
@@ -36,7 +44,7 @@ module Surrender
     end
     
     def queue_next_message_for(msg)
-      self.message_queue << msg.next_message
+      self.add_message msg.next_message
     end
     
     def has_a_ripe_message?

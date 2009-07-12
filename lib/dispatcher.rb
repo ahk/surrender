@@ -13,8 +13,8 @@ module Surrender
     
     def harvest_messages
       tasks.each do |task|
-        ripe = task.pick_ripest_message!
-        @ripe_messages << ripe if ripe
+        ripe = task.pick_ripe_messages!
+        @ripe_messages.concat ripe unless ripe.empty?
       end
       @ripe_messages
     end

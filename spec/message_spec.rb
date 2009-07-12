@@ -26,4 +26,9 @@ describe Surrender::Message::Reminder do
     
     first_msg.next_message.should == next_msg
   end
+  
+  it "should know if it is ripe enough to display" do
+    msg = @reminder.new @duration, Time.now
+    msg.is_ripe?.should == true
+  end
 end

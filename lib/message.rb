@@ -17,8 +17,14 @@ module Surrender
         is_equal = false if self.time_to_display_at != a_message.time_to_display_at
         is_equal
       end
+      
+      def is_ripe?
+        self.time_to_display_at <= Time.now
+      end
     end
     
+    ##
+    # Regular reminders at regular intervals
     class Reminder < Surrender::Message::Base
       def next_message
         next_msg_display_at_time = time_to_display_at + seconds_to_next_message
@@ -26,15 +32,23 @@ module Surrender
       end
     end
     
+    ##
+    # When to start a task
     class Start < Surrender::Message::Base
     end
     
+    ##
+    # When to stop a task
     class End < Surrender::Message::Base
     end
     
+    ##
+    # When you are getting close to starting or stopping
     class Warning < Surrender::Message::Base
     end
     
+    ##
+    # Counting the amount of time since you began working on something
     class Stopwatch < Surrender::Message::Base
     end
   end

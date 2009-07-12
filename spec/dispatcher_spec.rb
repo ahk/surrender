@@ -28,4 +28,13 @@ describe Surrender::Dispatcher do
     @task.message_queue << @msg
     @dispatcher.harvest_messages.should include(@msg)
   end
+  
+  it "should be able to harvest multiple ripe messages from a single task" do
+    @dispatcher.add_task @task
+    msg1 = Surrender::Message::Reminder.new 600, Time.now
+    msg2 = Surrender::Message::Reminder.new 800, Time.now
+    @task.add_message msg1
+    @task.add_message msg2
+    @dispatcher.harvest_messages.should include(msg1, msg2)
+  end
 end
