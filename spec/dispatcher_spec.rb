@@ -2,8 +2,9 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Surrender::Dispatcher do
   before(:each) do
+    @a_msg = mock('Surrender::Message')
+    @a_task = Surrender::Task.new
     @dispatcher = Surrender::Dispatcher.new
-    @a_msg = "eggs in 5 minutes"
   end
   
   it "should be able to list all of its running tasks" do
@@ -11,13 +12,18 @@ describe Surrender::Dispatcher do
     @dispatcher.should have(2).tasks
   end
   
+  it "should be able to add new tasks" do
+    @dispatcher.add_task @a_task
+    @dispatcher.tasks.should include(@a_task)
+  end
+  
   it "should define a main awareness task" do
-    task = Surrender::Task.new "never", "never", "10 minutes", "wake up!"
+    task = Surrender::Dispatcher::AWARENESS_TASK
     @dispatcher.tasks.should include(task)
   end
   
   it "should define a break task" do
-    task = Surrender::Task.new "never", "never", "29 minutes", "BREAK: Rest the eyes!"
+    task = Surrender::Dispatcher::BREAK_TASK
     @dispatcher.tasks.should include(task)
   end
   
@@ -27,11 +33,11 @@ describe Surrender::Dispatcher do
   end
   
   it "should be able to identify which messages are ripe for harvesting" do
-    ripe_messages = ["eggs done!", "break time"]
-    @dispatcher.harvest_messages.should have(ripe_messages)
+    pending "Task should know if it has ripe messages" do
+      @task.stub!(:pick_ripest_message!).and_return(@a_msg)
+      @dispatcher.harvest_messages.should have(@a_msg)
+    end
   end
   
-  it "should track messages concurrently, rather than serially" do
-    violated "Incomplete, needs refactor"
-  end
+  it "should track messages concurrently, rather than serially"
 end
