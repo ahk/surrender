@@ -3,9 +3,12 @@ module Surrender
     class Base
       attr_accessor :seconds_to_next_message, :time_to_display_at
       
-      def initialize(duration, time_to_fire = nil)
-        self.seconds_to_next_message = duration
-        self.time_to_display_at = ( time_to_fire || (Time.now + duration) )
+      def initialize(wait_til_next, when_to_display = nil)
+        # convert in case we received a TimeDuration rather than an integer
+        wait_til_next = wait_til_next.seconds if wait_til_next.respond_to? :seconds
+        
+        self.seconds_to_next_message = wait_til_next
+        self.time_to_display_at = when_to_display || (Time.now + wait_til_next)
       end
       
       def ==(a_message)

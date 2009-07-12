@@ -1,5 +1,5 @@
 require 'spec'
-require File.dirname(__FILE__) + '/../lib/surrender.rb'
+require File.dirname(__FILE__) + '/../lib/surrender'
 
 Spec::Runner.configure do |config|
   # config details here

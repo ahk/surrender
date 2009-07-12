@@ -14,14 +14,20 @@ module Surrender
     def initialize(start_time = Time.now, end_time = Time.now, reminder_frequency = 300, text = "hello world!")
       @start_time = start_time
       @end_time = end_time
-      @reminder_frequency = parse_reminder_frequency reminder_frequency
+      @reminder_frequency = parse_reminder_frequency(reminder_frequency)
       @text = text
       @message_queue = []
     end
     
     def pick_ripest_message!
       raise MessageQueueEmpty, "'#{text}' is out of messages" if message_queue.empty?
-      self.message_queue.shift if has_a_ripe_message?
+      if has_a_ripe_message?
+        msg = self.message_queue.shift
+        queue_next_message_for msg
+        msg
+      else
+        nil
+      end
     end
   
     private
@@ -29,8 +35,12 @@ module Surrender
       TimeDuration.parse time
     end
     
+    def queue_next_message_for(msg)
+      self.message_queue << msg.next_message
+    end
+    
     def has_a_ripe_message?
-      true if message_queue.first
+      message_queue.first.time_to_display_at <= Time.now
     end
   end
 end

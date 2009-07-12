@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Surrender::Task do
   before :each do
     @task = Surrender::Task.new
-    @msg = mock('Surrender::Message')
+    @msg = Surrender::Message::Reminder.new(600, Time.now)
   end
 
   it "carries a reminder frequency TimeDuration" do
@@ -17,7 +17,6 @@ describe Surrender::Task do
   end
   
   it "should know if it has ripe messages" do
-    pending "has a system for managing different message types"
     @task.message_queue << @msg
     @task.send(:has_a_ripe_message?).should == true
   end

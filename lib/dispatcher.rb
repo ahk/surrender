@@ -1,15 +1,9 @@
 module Surrender
   class Dispatcher
     attr_accessor :tasks
-
-    AWARENESS_TASK = Task.new "never", "never", "10 minutes", "wake up!"
-    BREAK_TASK = Task.new "never", "never", "29 minutes", "BREAK: Rest the eyes!"
     
     def initialize()
       @tasks = []
-      @tasks << AWARENESS_TASK
-      @tasks << BREAK_TASK
-      
       @ripe_messages = []
     end
     
