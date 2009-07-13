@@ -3,12 +3,7 @@ module Surrender
   # Stores information for tasks that surrender is tracking
   class Task
     class MessageQueueEmpty < StandardError; self; end
-    
-    RANDOM_MESSAGES = ["Get back to work!",
-                "Are you awake?",
-                "Try some coffee if you haven't already",
-                "What is your top priority right now?"]
-    
+  
     attr_accessor :start_time, :end_time, :reminder_frequency, :text, :message_queue
   
     def initialize(start_time = Time.now, end_time = Time.now, reminder_frequency = 300, text = "hello world!")
@@ -34,6 +29,7 @@ module Surrender
         end
       end
       
+      # remove picked messages, but not in the middle of the iteration
       self.message_queue -= ripe_msgs
       ripe_msgs
     end

@@ -1,13 +1,12 @@
 module Surrender
   module Message
     class Base
-      attr_accessor :seconds_to_next_message, :time_to_display_at
+      attr_accessor :seconds_to_next_message, :time_to_display_at, :text
       
-      def initialize(wait_til_next, when_to_display = nil)
-        # convert in case we received a TimeDuration rather than an integer
-        wait_til_next = wait_til_next.seconds if wait_til_next.respond_to? :seconds
-        
-        self.seconds_to_next_message = wait_til_next
+      # text=String, wait_til_next=Integer or String, when_to_display=Time
+      def initialize(text, wait_til_next, when_to_display = nil)
+        self.text = text
+        self.seconds_to_next_message = TimeDuration.parse(wait_til_next).seconds
         self.time_to_display_at = when_to_display || (Time.now + wait_til_next)
       end
       
@@ -28,7 +27,7 @@ module Surrender
     class Reminder < Surrender::Message::Base
       def next_message
         next_msg_display_at_time = time_to_display_at + seconds_to_next_message
-        self.class.new(self.seconds_to_next_message, next_msg_display_at_time)
+        self.class.new(text, seconds_to_next_message, next_msg_display_at_time)
       end
     end
     

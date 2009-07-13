@@ -6,7 +6,7 @@ module Surrender
     GROWL_OPTS = "-s -m"
   
     def self.send_notification(msg)
-      system [GROWL_CMD, GROWL_OPTS, msg].join(' ')
+      system [GROWL_CMD, GROWL_OPTS, msg.text].join(' ')
     end
   end
 end

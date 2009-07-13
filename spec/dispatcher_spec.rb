@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Surrender::Dispatcher do
   before(:each) do
-    @msg = Surrender::Message::Reminder.new 600, Time.now
+    @msg = Surrender::Message::Reminder.new "reminder", 600, Time.now
     @task = Surrender::Task.new
     @dispatcher = Surrender::Dispatcher.new
   end
@@ -31,8 +31,10 @@ describe Surrender::Dispatcher do
   
   it "should be able to harvest multiple ripe messages from a single task" do
     @dispatcher.add_task @task
-    msg1 = Surrender::Message::Reminder.new 600, Time.now
-    msg2 = Surrender::Message::Reminder.new 800, Time.now
+    new_msg = proc {Surrender::Message::Reminder.new "text", 600, Time.now}
+    msg1 = new_msg.call
+    msg2 = new_msg.call
+    
     @task.add_message msg1
     @task.add_message msg2
     @dispatcher.harvest_messages.should include(msg1, msg2)

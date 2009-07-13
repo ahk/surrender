@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Surrender::Task do
   before :each do
     @task = Surrender::Task.new
-    @msg = Surrender::Message::Reminder.new(600, Time.now)
+    @msg = Surrender::Message::Reminder.new("reminder", 600, Time.now)
   end
 
   it "carries a reminder frequency TimeDuration" do
@@ -27,12 +27,11 @@ describe Surrender::Task do
   end
   
   it "should be able to return multiple ripe messages" do
-    now = Time.now
-    msg1 = Surrender::Message::Reminder.new(600, now)
-    msg2 = Surrender::Message::Reminder.new(800, now)
+    msg1 = @msg.clone
+    msg2 = @msg.clone
     @task.add_message msg1
     @task.add_message msg2
-
+    
     @task.pick_ripe_messages!.should include(msg1,msg2)
   end
   

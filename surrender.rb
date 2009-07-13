@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+#!/usr/bin/env ruby
 
 # This script should be run while working at a computer, 
 # and is intended to increase the level of self awareness in a person's day 
@@ -12,5 +12,8 @@ require 'daemons'
 lib_dir = File.dirname(__FILE__) + '/lib'
 require File.join lib_dir, 'surrender'
 Daemons.run_proc 'surrender.rb' do
-  Surrender::Dispatcher.new.main_loop
+  dispatcher = Surrender::Dispatcher.new
+  dispatcher.add_task Surrender::DefaultTasks.awareness_task
+  dispatcher.add_task Surrender::DefaultTasks.break_task
+  dispatcher.main_loop
 end
