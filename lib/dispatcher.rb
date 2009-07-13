@@ -14,7 +14,7 @@ module Surrender
     def harvest_messages
       tasks.each do |task|
         ripe = task.pick_ripe_messages!
-        @ripe_messages.concat ripe unless ripe.empty?
+        @ripe_messages.concat(ripe) unless ripe.empty?
       end
       @ripe_messages
     end
@@ -27,9 +27,16 @@ module Surrender
     def main_loop
       loop do
         harvest_messages
-        @ripe_messages.each {|msg| send_message msg}
+        @ripe_messages.each {|msg| send_message msg} unless @ripe_messages.nil?
+        clear_ripe_messages!
+        raise unless @ripe_messages.empty?
         sleep 1
       end
+    end
+    
+    private
+    def clear_ripe_messages!
+      @ripe_messages.clear
     end
   end
 end

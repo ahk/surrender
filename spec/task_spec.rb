@@ -44,4 +44,7 @@ describe Surrender::Task do
     @task.pick_ripe_messages!
     @task.message_queue.should_not include(@msg)
   end
+  
+  it "should have a way of handling the initial message in a repeat chain. This way I could do away with all this annoying Time.now passing to initial messages"
+  it "shouldn't keep track of its reminder frequency"
 end
