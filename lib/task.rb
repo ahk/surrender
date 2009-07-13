@@ -32,7 +32,6 @@ module Surrender
       # remove picked messages, but not in the middle of the iteration
       # I think this is a sign of me being a bad programmer.
       self.message_queue -= ripe_msgs
-      puts "debug::: \n" + ripe_msgs.inspect
       ripe_msgs
     end
   
