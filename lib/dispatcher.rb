@@ -29,7 +29,11 @@ module Surrender
     
     # this is essentially the executable
     def main_loop
+      # will it run?
+      SystemInfo.check_dependencies
+      # let em know it's running
       send_message startup_message
+      # run it!
       loop do
         harvest_messages
         @ripe_messages.each {|msg| send_message msg} unless @ripe_messages.nil?
