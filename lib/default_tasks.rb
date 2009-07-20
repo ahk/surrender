@@ -7,15 +7,13 @@ module Surrender
     
     class << self
       def awareness_task
-        t =           Task.new( Time.now, Time.now, "10 minutes", "are you awake?" )
-        t.add_message Message::Reminder.new( "\"are you awake?\"", "10 minutes", Time.now )
-        t
+        t = Task.new( Time.now, Time.now, "are you awake?" )
+        t.add_message Message::Reminder.new( "are you awake?", "10 minutes" )
       end
       
       def break_task
-        t = Task.new Time.now, Time.now, "30 minutes", "REST YOUR EYES"
-        t.add_message Message::Reminder.new "\"REST YOUR EYES\"", "30 minutes",Time.now 
-        t
+        t = Task.new Time.now, Time.now, "REST YOUR EYES"
+        t.add_message Message::Reminder.new "REST YOUR EYES", "30 minutes" 
       end
     end
   end

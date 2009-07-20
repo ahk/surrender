@@ -2,20 +2,20 @@ module Surrender
   ##
   # Stores information for tasks that surrender is tracking
   class Task
-    class MessageQueueEmpty < StandardError; self; end
+    class MessageQueueEmpty < Exception; self; end
   
-    attr_accessor :start_time, :end_time, :reminder_frequency, :text, :message_queue
+    attr_accessor :start_time, :end_time, :text, :message_queue
   
-    def initialize(start_time = Time.now, end_time = Time.now, reminder_frequency = 300, text = "hello world!")
+    def initialize(start_time = Time.now, end_time = Time.now, text = "hello world!")
       @start_time = start_time
       @end_time = end_time
-      @reminder_frequency = parse_reminder_frequency(reminder_frequency)
       @text = text
       @message_queue = []
     end
     
     def add_message(message)
       self.message_queue << message
+      self
     end
     
     def pick_ripe_messages!
@@ -36,10 +36,6 @@ module Surrender
     end
   
     private
-    def parse_reminder_frequency(time)
-      TimeDuration.parse time
-    end
-    
     def queue_next_message_for(msg)
       self.add_message msg.next_message
     end

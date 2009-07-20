@@ -39,4 +39,8 @@ describe Surrender::Dispatcher do
     @task.add_message msg2
     @dispatcher.harvest_messages.should include(msg1, msg2)
   end
+  
+  it "should send a startup message" do
+    @dispatcher.startup_message.should be_instance_of Surrender::Message::Warning
+  end
 end

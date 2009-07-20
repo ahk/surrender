@@ -4,10 +4,14 @@ module Surrender
       attr_accessor :seconds_to_next_message, :time_to_display_at, :text
       
       # text=String, wait_til_next=Integer or String, when_to_display=Time
-      def initialize(text, wait_til_next, when_to_display = nil)
+      def initialize(text, wait_til_next = nil, when_to_display = nil)
         self.text = text
-        self.seconds_to_next_message = TimeDuration.parse(wait_til_next).seconds
-        self.time_to_display_at = when_to_display || (Time.now + wait_til_next)
+        if wait_til_next
+          self.seconds_to_next_message = TimeDuration.parse(wait_til_next).seconds
+          self.time_to_display_at = when_to_display || (Time.now + seconds_to_next_message)
+        else
+          self.time_to_display_at = Time.now
+        end
       end
       
       def ==(a_message)

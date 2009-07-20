@@ -5,16 +5,6 @@ describe Surrender::Task do
     @task = Surrender::Task.new
     @msg = Surrender::Message::Reminder.new("reminder", 600, Time.now)
   end
-
-  it "carries a reminder frequency TimeDuration" do
-    @task.reminder_frequency.should be_instance_of Surrender::TimeDuration
-  end
-  
-  it "can parse strings into TimeDuration" do
-    example = "5 minutes"
-    time_obj = @task.send :parse_reminder_frequency, example
-    time_obj.should be_instance_of Surrender::TimeDuration
-  end
   
   it "should be able to add new messages to the queue" do
     @task.add_message @msg
@@ -45,6 +35,8 @@ describe Surrender::Task do
     @task.message_queue.should_not include(@msg)
   end
   
-  it "should have a way of handling the initial message in a repeat chain. This way I could do away with all this annoying Time.now passing to initial messages"
-  it "shouldn't keep track of its reminder frequency"
+  it "should return task after adding messages" do
+    exp = @task.add_message @msg
+    exp.should be_instance_of Surrender::Task
+  end
 end

@@ -7,6 +7,10 @@ module Surrender
       @ripe_messages = []
     end
     
+    def startup_message
+      Message::Warning.new("You have surrendered ...")
+    end
+    
     def add_task(task)
       self.tasks << task
     end
@@ -25,6 +29,7 @@ module Surrender
     
     # this is essentially the executable
     def main_loop
+      send_message startup_message
       loop do
         harvest_messages
         @ripe_messages.each {|msg| send_message msg} unless @ripe_messages.nil?
