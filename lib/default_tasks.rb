@@ -7,8 +7,8 @@ module Surrender
     
     class << self
       def awareness_task
-        t = Task.new Time.now, Time.now, "10 minutes", "are you awake?"
-        t.add_message Message::Reminder.new "\"are you awake?\"", "10 minutes", Time.now
+        t =           Task.new( Time.now, Time.now, "10 minutes", "are you awake?" )
+        t.add_message Message::Reminder.new( "\"are you awake?\"", "10 minutes", Time.now )
         t
       end
       

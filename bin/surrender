@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+# Simple executable wrapper for Surrender's server/client dispatching
+
+this_file = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+bin_dir = File.dirname this_file
+exec_file = File.join bin_dir, '..', 'surrender.rb'
+args = ARGV.join ' '
+
+exec "ruby #{exec_file} #{args}"
