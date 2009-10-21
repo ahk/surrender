@@ -34,14 +34,15 @@ module Surrender
       self.message_queue -= ripe_msgs
       ripe_msgs
     end
+    
+    # are any messages on the task ripe?
+    def ripe?
+      message_queue.first.time_to_display_at <= Time.now
+    end
   
-    private
+  private
     def queue_next_message_for(msg)
       self.add_message msg.next_message
     end
-    
-    def has_a_ripe_message?
-      message_queue.first.time_to_display_at <= Time.now
-    end
-  end
-end
+  end # Task
+end # Surrender

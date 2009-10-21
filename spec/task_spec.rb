@@ -13,7 +13,7 @@ describe Surrender::Task do
   
   it "should know if it has ripe messages" do
     @task.add_message @msg
-    @task.send(:has_a_ripe_message?).should == true
+    @task.ripe?.should == true
   end
   
   it "should be able to return multiple ripe messages" do
