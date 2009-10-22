@@ -1,0 +1,19 @@
+awareness:
+  start_time: now
+  end_time:   now
+  text:       awareness task
+  messages:
+    awake:
+      wait_til_next:   10 minutes
+      when_to_display:
+      text:            are you awake?
+  
+break_time:
+  start_time: now
+  end_time:   now
+  text:       'break task'
+  messages:
+    rest:
+      wait_til_next:   30 minutes
+      when_to_display:
+      text:            REST YOUR EYES
