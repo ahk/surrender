@@ -6,6 +6,26 @@ describe Surrender::Task do
     @msg  = Surrender::Message::Reminder.new("reminder", 600, Time.now)
   end
   
+  it "creates multiple tasks from YAML" do
+    tasks = Surrender::Task.load_yaml <<-YAML
+    task_1:
+      start_time: #{sooner_time}
+      end_time:   #{later_time}
+      text:       This is task 1
+    task_2:
+      start_time: #{sooner_time}
+      end_time:   #{later_time}
+      text:       This is task 2
+    YAML
+
+    tasks.should have(2).items
+    tasks.each do |task|
+     task.should be_instance_of Surrender::Task
+     task.start_time.should == sooner_time
+     task.end_time.should == later_time
+    end
+  end
+  
   it "should be able to add new messages to the queue" do
     @task.add_message @msg
     @task.message_queue.should include @msg

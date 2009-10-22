@@ -6,6 +6,17 @@ module Surrender
   # Stores information for tasks that surrender is tracking
   class Task
     class MessageQueueEmpty < Exception; self; end
+    
+    def self.load_yaml yaml
+      tasks = YAML.load yaml
+      tasks.map do |name,attrs|
+        start = Time.parse attrs['start_time']
+        stop  = Time.parse attrs['end_time']
+        text  = attrs['text']
+
+        Surrender::Task.new( start, stop, text )
+      end
+    end
   
     attr_accessor :start_time, :end_time, :text, :message_queue
   
