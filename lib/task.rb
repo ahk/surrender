@@ -1,3 +1,6 @@
+require 'yaml'
+require 'time'
+
 module Surrender
   ##
   # Stores information for tasks that surrender is tracking
@@ -6,7 +9,7 @@ module Surrender
   
     attr_accessor :start_time, :end_time, :text, :message_queue
   
-    def initialize(start_time = Time.now, end_time = Time.now, text = "hello world!")
+    def initialize(start_time, end_time, text)
       @start_time = start_time
       @end_time = end_time
       @text = text

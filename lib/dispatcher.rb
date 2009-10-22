@@ -1,3 +1,6 @@
+require 'yaml'
+require 'time'
+
 module Surrender
   class Dispatcher
     attr_accessor :tasks
@@ -13,6 +16,18 @@ module Surrender
     
     def add_task(task)
       self.tasks << task
+    end
+    
+    # load tasks from YAML
+    def load_tasks yaml
+      tasks = YAML.load yaml
+      tasks.each do |name,attrs|
+        start = Time.parse attrs['start_time']
+        stop  = Time.parse attrs['end_time']
+        text  = attrs['text']
+
+        add_task Surrender::Task.new( start, stop, text )
+      end
     end
     
     def harvest_messages

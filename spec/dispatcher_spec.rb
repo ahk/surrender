@@ -18,6 +18,28 @@ describe Surrender::Dispatcher do
     @dispatcher.tasks.should include(@task)
   end
   
+  
+  it "should load new tasks from YAML" do
+    yaml = <<-YAML
+    task_1:
+      start_time: #{sooner_time}
+      end_time:   #{later_time}
+      text:       This is task 1
+    task_2:
+      start_time: #{sooner_time}
+      end_time:   #{later_time}
+      text:       This is task 2
+    YAML
+    @dispatcher.load_tasks yaml
+    
+    @dispatcher.should have(2).tasks
+    @dispatcher.tasks.each do |task|
+     task.should be_instance_of Surrender::Task
+     task.start_time.should == sooner_time
+     task.end_time.should == later_time
+    end
+  end
+  
   it "should delegate send_message to Output.send_notification" do
     Surrender::Output.should_receive(:send_notification).with(@msg).and_return(true)
     @dispatcher.send_message @msg
