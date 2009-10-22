@@ -26,6 +26,26 @@ describe Surrender::Task do
     end
   end
   
+  it "adds messages to YAML loaded tasks" do
+    yaml = <<-YAML
+    task:
+      start_time: #{sooner_time}
+      end_time:   #{later_time}
+      text:       This is a task
+      messages:
+        msg_1:
+          seconds_to_next_message: 5
+          time_to_display_at:      #{sooner_time}
+          text:                    message 1
+        msg_2:
+          seconds_to_next_message: 5
+          time_to_display_at:      #{later_time}
+          text:                    message 2
+    YAML
+    task = Surrender::Task.load_yaml(yaml).first
+    task.should have(2).messages
+  end
+  
   it "should be able to add new messages to the queue" do
     @task.add_message @msg
     @task.message_queue.should include @msg

@@ -1,5 +1,18 @@
+require 'yaml'
+require 'time'
+
 module Surrender
   module Message
+    def self.load_hash messages
+      messages ||= []
+      messages.map do |name, attrs|
+        to_next = attrs['seconds_to_next_message']
+        display_at = attrs['time_to_display_at']
+        text = attrs['text']
+        Surrender::Message::Reminder.new text, to_next, display_at
+      end
+    end
+    
     class Base
       attr_accessor :seconds_to_next_message, :time_to_display_at, :text
       

@@ -10,15 +10,19 @@ module Surrender
     def self.load_yaml yaml
       tasks = YAML.load yaml
       tasks.map do |name,attrs|
-        start = Time.parse attrs['start_time']
-        stop  = Time.parse attrs['end_time']
-        text  = attrs['text']
+        start    = Time.parse attrs['start_time']
+        stop     = Time.parse attrs['end_time']
+        text     = attrs['text']
+        messages = Surrender::Message.load_hash attrs['messages']
 
-        Surrender::Task.new( start, stop, text )
+        task = Surrender::Task.new( start, stop, text )
+        messages.each {|msg| task.add_message msg}
+        task
       end
     end
   
     attr_accessor :start_time, :end_time, :text, :message_queue
+    alias_method :messages, :message_queue
   
     def initialize(start_time, end_time, text)
       @start_time = start_time
