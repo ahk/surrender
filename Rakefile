@@ -1,5 +1,5 @@
 namespace 'create' do
-  desc "Create .rb file and spec for a new module, name=<name>"
+  desc "Create lib file and spec for a new module, name=<name>"
   task :module do
     unless ENV.include?("name")
       raise "usage: rake create:module name=<module name>"
