@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe Surrender::Dispatcher do
-  before(:each) do
+  before :each do
     @msg = Surrender::Message::Reminder.new "reminder", 600, Time.now
-    @task = Surrender::Task.new
+    @task = Surrender::Task.new sooner_time, later_time, 'a task'
     @dispatcher = Surrender::Dispatcher.new
   end
   

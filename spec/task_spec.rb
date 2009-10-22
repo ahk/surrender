@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Surrender::Task do
   before :each do
-    @task = Surrender::Task.new
-    @msg = Surrender::Message::Reminder.new("reminder", 600, Time.now)
+    @task = Surrender::Task.new sooner_time, later_time, 'text'
+    @msg  = Surrender::Message::Reminder.new("reminder", 600, Time.now)
   end
   
   it "should be able to add new messages to the queue" do
