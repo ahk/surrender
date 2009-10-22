@@ -35,8 +35,6 @@ describe Surrender::Dispatcher do
     @dispatcher.should have(2).tasks
     @dispatcher.tasks.each do |task|
      task.should be_instance_of Surrender::Task
-     task.start_time.should == sooner_time
-     task.end_time.should == later_time
     end
   end
   

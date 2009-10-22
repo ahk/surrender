@@ -20,14 +20,8 @@ module Surrender
     
     # load tasks from YAML
     def load_tasks yaml
-      tasks = YAML.load yaml
-      tasks.each do |name,attrs|
-        start = Time.parse attrs['start_time']
-        stop  = Time.parse attrs['end_time']
-        text  = attrs['text']
-
-        add_task Surrender::Task.new( start, stop, text )
-      end
+      tasks = Surrender::Task.load_yaml yaml
+      tasks.each { |task| add_task task  }
     end
     
     def harvest_messages
