@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Surrender::Task do
   before :each do
     @task = Surrender::Task.new sooner_time, later_time, 'text'
-    @msg  = Surrender::Message::Reminder.new("reminder", 600)
-    @msg.ticks = 600
+    @ripe_msg  = Surrender::Message::Reminder.new("reminder", 600)
+    @ripe_msg.ticks = 600 # ripen the message
   end
   
   it "creates multiple tasks from YAML" do
@@ -52,24 +52,24 @@ describe Surrender::Task do
   end
   
   it "should tick all messages on tick" do
-    @task.add_message @msg
-    @msg.should_receive :tick!
+    @task.add_message @ripe_msg
+    @ripe_msg.should_receive :tick!
     @task.tick!
   end
   
   it "should be able to add new messages to the queue" do
-    @task.add_message @msg
-    @task.message_queue.should include @msg
+    @task.add_message @ripe_msg
+    @task.message_queue.should include @ripe_msg
   end
   
   it "should know if it has ripe messages" do
-    @task.add_message @msg
+    @task.add_message @ripe_msg
     @task.ripe?.should == true
   end
   
   it "should be able to return multiple ripe messages" do
-    msg1 = @msg.clone
-    msg2 = @msg.clone
+    msg1 = @ripe_msg.clone
+    msg2 = @ripe_msg.clone
     @task.add_message msg1
     @task.add_message msg2
     
@@ -81,13 +81,13 @@ describe Surrender::Task do
   end
   
   it "should delete the ripest message after it is picked" do
-    @task.add_message @msg
+    @task.add_message @ripe_msg
     @task.pick_ripe_messages!
-    @task.message_queue.should_not include(@msg)
+    @task.message_queue.should_not include(@ripe_msg)
   end
   
   it "should return task after adding messages" do
-    exp = @task.add_message @msg
+    exp = @task.add_message @ripe_msg
     exp.should be_instance_of Surrender::Task
   end
 end

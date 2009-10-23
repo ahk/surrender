@@ -2,7 +2,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 
 describe Surrender::Dispatcher do
   before :each do
-    @msg = Surrender::Message::Reminder.new "reminder", 600, Time.now
+    @ripe_msg = Surrender::Message::Reminder.new "reminder", 600
+    @ripe_msg.ticks = 600 # ripen the message
     @task = Surrender::Task.new sooner_time, later_time, 'a task'
     @dispatcher = Surrender::Dispatcher.new
   end
@@ -34,23 +35,23 @@ describe Surrender::Dispatcher do
     
     @dispatcher.should have(2).tasks
     @dispatcher.tasks.each do |task|
-     task.should be_instance_of Surrender::Task
+      task.should be_instance_of Surrender::Task
     end
   end
   
   it "should delegate send_message to Output.send_notification" do
-    Surrender::Output.should_receive(:send_notification).with(@msg).and_return(true)
-    @dispatcher.send_message @msg
+    Surrender::Output.should_receive(:send_notification).with(@ripe_msg).and_return(true)
+    @dispatcher.send_message @ripe_msg
   end
   
   it "should be able to identify which messages are ripe for harvesting" do
-    @task.message_queue << @msg
+    @task.message_queue << @ripe_msg
     @dispatcher.add_task @task
-    @dispatcher.harvest_messages.should include(@msg)
+    @dispatcher.harvest_messages.should include(@ripe_msg)
   end
   
   it "should tick each message when harvesting" do
-    @task.message_queue << @msg
+    @task.message_queue << @ripe_msg
     @dispatcher.add_task @task
     
     @task.should_receive(:tick!)
@@ -59,16 +60,15 @@ describe Surrender::Dispatcher do
   
   it "should be able to harvest multiple ripe messages from a single task" do
     @dispatcher.add_task @task
-    new_msg = proc {Surrender::Message::Reminder.new "text", 600, Time.now}
-    msg1 = new_msg.call
-    msg2 = new_msg.call
+    msg1 = @ripe_msg.clone
+    msg2 = @ripe_msg.clone
     
     @task.add_message msg1
     @task.add_message msg2
     @dispatcher.harvest_messages.should include(msg1, msg2)
   end
   
-  it "should send a startup message" do
+  it "should have a startup message" do
     @dispatcher.startup_message.should be_instance_of Surrender::Message::Warning
   end
 end

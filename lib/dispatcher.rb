@@ -1,17 +1,11 @@
-require 'yaml'
-require 'time'
-
 module Surrender
   class Dispatcher
-    attr_accessor :tasks
+    attr_accessor :tasks, :startup_message
     
     def initialize()
       @tasks = []
       @ripe_messages = []
-    end
-    
-    def startup_message
-      Message::Warning.new("You have surrendered ...")
+      @startup_message = Message::Warning.new("You have surrendered ...")
     end
     
     def add_task(task)
@@ -48,12 +42,11 @@ module Surrender
         harvest_messages
         @ripe_messages.each {|msg| send_message msg} unless @ripe_messages.nil?
         clear_ripe_messages!
-        raise unless @ripe_messages.empty?
         sleep 1
       end
     end
     
-    private
+  private
     def clear_ripe_messages!
       @ripe_messages.clear
     end
