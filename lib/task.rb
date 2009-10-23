@@ -45,7 +45,7 @@ module Surrender
       
       ripe_msgs = []
       self.message_queue.each do |msg|
-        if msg.is_ripe?
+        if msg.ripe?
           ripe_msgs << msg
           queue_next_message_for msg
         end
@@ -59,7 +59,7 @@ module Surrender
     
     # are any messages on the task ripe?
     def ripe?
-      message_queue.first.time_to_display_at <= Time.now
+      !!message_queue.detect {|msg| msg.ripe?}
     end
   
   private

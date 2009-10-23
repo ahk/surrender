@@ -9,11 +9,11 @@ describe Surrender::Message::Reminder do
   it "can create multiple messages from a Hash" do
     hash = {
       :msg_1 => {
-        'seconds_to_next_message' => 5,
+        'display_every' => '5 seconds',
         'text'                    => 'message 1'
       },
       :msg_2 => {
-        'seconds_to_next_message' => 5,
+        'display_every' => '5 seconds',
         'text'                    => 'message 2'
       }
     }
@@ -40,11 +40,11 @@ describe Surrender::Message::Reminder do
   it "knows if it is ripe enough to display" do
     msg = @reminder.new 'msg', 5
     4.times { msg.tick! }
-    msg.is_ripe?.should be false
+    msg.ripe?.should be false
     
     msg = @reminder.new 'msg', 5
     5.times { msg.tick! }
-    msg.is_ripe?.should be true
+    msg.ripe?.should be true
   end
   
   it "can compare by attributes using ==" do

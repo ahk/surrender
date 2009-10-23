@@ -4,8 +4,7 @@ awareness:
   text:       awareness task
   messages:
     awake:
-      wait_til_next:   10 minutes
-      when_to_display:
+      display_every:   10 minutes
       text:            are you awake?
   
 break_time:
@@ -14,6 +13,5 @@ break_time:
   text:       'break task'
   messages:
     rest:
-      wait_til_next:   30 minutes
-      when_to_display:
+      display_every:   10 minutes
       text:            REST YOUR EYES

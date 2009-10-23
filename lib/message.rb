@@ -6,9 +6,9 @@ module Surrender
     def self.load_hash messages
       messages ||= []
       messages.map do |name, attrs|
-        ticks_to_next = attrs['seconds_to_next_message']
+        interval_to_next = attrs['display_every']
         text          = attrs['text']
-        Surrender::Message::Reminder.new text, ticks_to_next
+        Surrender::Message::Reminder.new text, interval_to_next
       end
     end
     
@@ -32,7 +32,7 @@ module Surrender
       end
       
       # ripe when it's been ticked enough, 
-      def is_ripe?
+      def ripe?
         self.ticks >= ticks_til_ripe
       end
     end

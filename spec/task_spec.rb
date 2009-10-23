@@ -3,7 +3,8 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe Surrender::Task do
   before :each do
     @task = Surrender::Task.new sooner_time, later_time, 'text'
-    @msg  = Surrender::Message::Reminder.new("reminder", 600, Time.now)
+    @msg  = Surrender::Message::Reminder.new("reminder", 600)
+    @msg.ticks = 600
   end
   
   it "creates multiple tasks from YAML" do
