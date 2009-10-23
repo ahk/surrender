@@ -6,42 +6,34 @@ module Surrender
     def self.load_hash messages
       messages ||= []
       messages.map do |name, attrs|
-        to_next    = attrs['wait_til_next']
-        display_at = attrs['when_to_display']
-        text       = attrs['text']
-        Surrender::Message::Reminder.new text, to_next, display_at
+        ticks_to_next = attrs['seconds_to_next_message']
+        text          = attrs['text']
+        Surrender::Message::Reminder.new text, ticks_to_next
       end
     end
     
     class Base
-      attr_accessor :seconds_to_next_message, :time_to_display_at, :text, :remaining_ticks
+      attr_accessor :text, :ticks, :ticks_til_ripe
       
-      # text=String, wait_til_next=Integer or String, when_to_display=Time
-      def initialize(text, wait_til_next = nil, when_to_display = nil)
-        self.text = text
-        if wait_til_next
-          seconds = TimeDuration.parse(wait_til_next).seconds
-          self.remaining_ticks = seconds
-          self.seconds_to_next_message = seconds
-          self.time_to_display_at = when_to_display || (Time.now + seconds)
-        else
-          self.time_to_display_at = Time.now
-        end
+      # text=String, wait_til_next=Integer or String
+      def initialize(text, wait_til_next = nil)
+        self.text  = text
+        self.ticks = 0        
+        self.ticks_til_ripe = TimeDuration.parse(wait_til_next).seconds if wait_til_next
       end
       
       def tick!
-        self.remaining_ticks -= 1
+        self.ticks += 1
       end
       
       def ==(a_message)
-        is_equal = true
-        is_equal = false if self.seconds_to_next_message != a_message.seconds_to_next_message
-        is_equal = false if self.time_to_display_at != a_message.time_to_display_at
-        is_equal
+        (self.ticks == a_message.ticks) &&
+        (self.ticks_til_ripe == a_message.ticks_til_ripe)
       end
       
+      # ripe when it's been ticked enough, 
       def is_ripe?
-        self.remaining_ticks <= 0
+        self.ticks >= ticks_til_ripe
       end
     end
     
@@ -49,8 +41,7 @@ module Surrender
     # Regular reminders at regular intervals
     class Reminder < Surrender::Message::Base
       def next_message
-        next_msg_display_at_time = time_to_display_at + seconds_to_next_message
-        self.class.new(text, seconds_to_next_message, next_msg_display_at_time)
+        self.class.new( self.text, self.ticks_til_ripe )
       end
     end
     

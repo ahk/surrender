@@ -10,12 +10,10 @@ describe Surrender::Message::Reminder do
     hash = {
       :msg_1 => {
         'seconds_to_next_message' => 5,
-        'time_to_display_at'      => sooner_time,
         'text'                    => 'message 1'
       },
       :msg_2 => {
         'seconds_to_next_message' => 5,
-        'time_to_display_at'      => later_time,
         'text'                    => 'message 2'
       }
     }
@@ -24,37 +22,42 @@ describe Surrender::Message::Reminder do
     messages.should have(2).items
     messages.each do |msg|
       msg.should be_instance_of Surrender::Message::Reminder
+      msg.ticks_til_ripe.should be 5
     end
   end
   
-  it "should count remaining ticks" do
+  it "should start with 0 ticks" do
     msg = @reminder.new "msg", @ten_minutes
-    msg.remaining_ticks.should == @ten_minutes
+    msg.ticks.should == 0
   end
   
-  it "should lose a tick on tick!" do
+  it "should add a tick on tick!" do
     msg = @reminder.new "msg", @ten_minutes
     msg.tick!
-    msg.remaining_ticks.should == (@ten_minutes - 1)
+    msg.ticks.should == 1
   end
   
   it "knows if it is ripe enough to display" do
-    msg = @reminder.new 'msg', 5, Time.now
+    msg = @reminder.new 'msg', 5
+    4.times { msg.tick! }
+    msg.is_ripe?.should be false
+    
+    msg = @reminder.new 'msg', 5
     5.times { msg.tick! }
-    msg.is_ripe?.should == true
+    msg.is_ripe?.should be true
   end
   
   it "can compare by attributes using ==" do
     msg1 = @reminder.new "msg", @ten_minutes
-    msg2 = msg1.clone
+    msg2 = @reminder.new "msg", @ten_minutes
     msg1.should == msg2
   end
   
   it "creates new messages of its type to add to a Task message queue" do
     first_msg = @reminder.new "msg", @ten_minutes
-    next_time = first_msg.time_to_display_at + first_msg.seconds_to_next_message
-    next_msg =  @reminder.new "msg", @ten_minutes, next_time
+    next_msg  = first_msg.clone
     
+    5.times {first_msg.tick!}
     first_msg.next_message.should == next_msg
   end
 end
