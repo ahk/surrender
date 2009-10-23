@@ -9,11 +9,15 @@ require 'rubygems'
 require 'daemons'
 
 # fire up the dispatcher as a daemon
-lib_dir = File.dirname(__FILE__) + '/lib'
+root = File.dirname(__FILE__)
+lib_dir = root + '/lib'
+example_dir = root + '/examples'
+task_file = IO.read(example_dir + '/default_tasks.yml')
+
 require File.join lib_dir, 'surrender'
+
 Daemons.run_proc 'surrender.rb' do
   dispatcher = Surrender::Dispatcher.new
-  dispatcher.add_task Surrender::DefaultTasks.awareness_task
-  dispatcher.add_task Surrender::DefaultTasks.break_task
+  dispatcher.load_tasks task_file
   dispatcher.main_loop
 end

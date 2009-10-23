@@ -6,9 +6,9 @@ module Surrender
     def self.load_hash messages
       messages ||= []
       messages.map do |name, attrs|
-        to_next = attrs['wait_til_next']
+        to_next    = attrs['wait_til_next']
         display_at = attrs['when_to_display']
-        text = attrs['text']
+        text       = attrs['text']
         Surrender::Message::Reminder.new text, to_next, display_at
       end
     end
