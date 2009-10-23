@@ -6,6 +6,7 @@ describe Surrender::Dispatcher do
     @ripe_msg.ticks = 600 # ripen the message
     @task = Surrender::Task.new sooner_time, later_time, 'a task'
     @dispatcher = Surrender::Dispatcher.new
+    @dispatcher.stub!(:sleep)
   end
   
   it "should be able to list all of its running tasks" do
@@ -50,12 +51,17 @@ describe Surrender::Dispatcher do
     @dispatcher.harvest_messages.should include(@ripe_msg)
   end
   
-  it "should tick each message when harvesting" do
+  it "should sleep on tick" do
+    @dispatcher.should_receive :sleep
+    @dispatcher.tick!
+  end
+  
+  it "should tick all tasks on tick" do
     @task.message_queue << @ripe_msg
     @dispatcher.add_task @task
     
     @task.should_receive(:tick!)
-    @dispatcher.harvest_messages
+    @dispatcher.tick!
   end
   
   it "should be able to harvest multiple ripe messages from a single task" do

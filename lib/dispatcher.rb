@@ -20,7 +20,6 @@ module Surrender
     
     def harvest_messages
       tasks.each do |task|
-        task.tick!
         ripe = task.pick_ripe_messages!
         @ripe_messages.concat(ripe) unless ripe.empty?
       end
@@ -29,6 +28,12 @@ module Surrender
 
     def send_message(msg)
       Output.send_notification msg
+    end
+    
+    # basic 
+    def tick!
+      tasks.each { |task| task.tick! }
+      sleep 1
     end
     
     # this is essentially the executable
@@ -42,7 +47,7 @@ module Surrender
         harvest_messages
         @ripe_messages.each {|msg| send_message msg} unless @ripe_messages.nil?
         clear_ripe_messages!
-        sleep 1
+        tick!
       end
     end
     
