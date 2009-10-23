@@ -36,6 +36,10 @@ module Surrender
       self
     end
     
+    def tick!
+      message_queue.each { |msg| msg.tick! }
+    end
+    
     def pick_ripe_messages!
       raise MessageQueueEmpty, "'#{text}' is out of messages" if message_queue.empty?
       

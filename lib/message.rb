@@ -14,17 +14,23 @@ module Surrender
     end
     
     class Base
-      attr_accessor :seconds_to_next_message, :time_to_display_at, :text
+      attr_accessor :seconds_to_next_message, :time_to_display_at, :text, :remaining_ticks
       
       # text=String, wait_til_next=Integer or String, when_to_display=Time
       def initialize(text, wait_til_next = nil, when_to_display = nil)
         self.text = text
         if wait_til_next
-          self.seconds_to_next_message = TimeDuration.parse(wait_til_next).seconds
-          self.time_to_display_at = when_to_display || (Time.now + seconds_to_next_message)
+          seconds = TimeDuration.parse(wait_til_next).seconds
+          self.remaining_ticks = seconds
+          self.seconds_to_next_message = seconds
+          self.time_to_display_at = when_to_display || (Time.now + seconds)
         else
           self.time_to_display_at = Time.now
         end
+      end
+      
+      def tick!
+        self.remaining_ticks -= 1
       end
       
       def ==(a_message)
@@ -35,7 +41,7 @@ module Surrender
       end
       
       def is_ripe?
-        self.time_to_display_at <= Time.now
+        self.remaining_ticks <= 0
       end
     end
     

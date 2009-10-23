@@ -44,9 +44,17 @@ describe Surrender::Dispatcher do
   end
   
   it "should be able to identify which messages are ripe for harvesting" do
-    @dispatcher.add_task @task
     @task.message_queue << @msg
+    @dispatcher.add_task @task
     @dispatcher.harvest_messages.should include(@msg)
+  end
+  
+  it "should tick each message when harvesting" do
+    @task.message_queue << @msg
+    @dispatcher.add_task @task
+    
+    @task.should_receive(:tick!)
+    @dispatcher.harvest_messages
   end
   
   it "should be able to harvest multiple ripe messages from a single task" do

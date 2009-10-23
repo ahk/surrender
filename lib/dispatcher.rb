@@ -26,6 +26,7 @@ module Surrender
     
     def harvest_messages
       tasks.each do |task|
+        task.tick!
         ripe = task.pick_ripe_messages!
         @ripe_messages.concat(ripe) unless ripe.empty?
       end

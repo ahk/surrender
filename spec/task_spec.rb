@@ -46,6 +46,16 @@ describe Surrender::Task do
     task.should have(2).messages
   end
   
+  it "should tick" do
+    @task.should respond_to(:tick!)
+  end
+  
+  it "should tick all messages on tick" do
+    @task.add_message @msg
+    @msg.should_receive :tick!
+    @task.tick!
+  end
+  
   it "should be able to add new messages to the queue" do
     @task.add_message @msg
     @task.message_queue.should include @msg
