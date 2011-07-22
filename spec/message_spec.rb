@@ -21,6 +21,7 @@ describe Surrender::Message::Reminder do
     
     messages.should have(2).items
     messages.each do |msg|
+      # TODO: instance of checks are lame
       msg.should be_instance_of Surrender::Message::Reminder
       msg.ticks_til_ripe.should be 5
     end
@@ -47,6 +48,7 @@ describe Surrender::Message::Reminder do
     msg.ripe?.should be true
   end
   
+  # TODO: what's this for? instances of the same reminder are considered equal? 
   it "can compare by attributes using ==" do
     msg1 = @reminder.new "msg", @ten_minutes
     msg2 = @reminder.new "msg", @ten_minutes

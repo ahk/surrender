@@ -11,9 +11,11 @@ describe Surrender::SystemInfo do
   end
 
   it "should fail gracefully if not used on Mac" do
+    # TODO: this is nasty stubbing
     Surrender::SystemInfo.stub!(:`).and_return "Linux"
     proc {Surrender::SystemInfo.check_dependencies}.should raise_error Surrender::DependencyError
   end
   
+  # TODO: dumb pending
   it "should be able to identify the current windowing system"
 end

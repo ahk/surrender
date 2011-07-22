@@ -35,6 +35,7 @@ describe Surrender::Dispatcher do
     @dispatcher.load_tasks yaml
     
     @dispatcher.should have(2).tasks
+    # TODO: this is worthless check
     @dispatcher.tasks.each do |task|
       task.should be_instance_of Surrender::Task
     end
@@ -51,6 +52,7 @@ describe Surrender::Dispatcher do
     @dispatcher.harvest_messages.should include(@ripe_msg)
   end
   
+  # TODO: worthless spec
   it "should sleep on tick" do
     @dispatcher.should_receive :sleep
     @dispatcher.tick!
@@ -74,6 +76,7 @@ describe Surrender::Dispatcher do
     @dispatcher.harvest_messages.should include(msg1, msg2)
   end
   
+  # TODO: probbaly a worthless spec
   it "should have a startup message" do
     @dispatcher.startup_message.should be_instance_of Surrender::Message::Warning
   end

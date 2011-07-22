@@ -43,6 +43,8 @@ describe Surrender::Task do
           time_to_display_at:      #{later_time}
           text:                    message 2
     YAML
+    # TODO: is this load_yaml test redundant with functionality in
+    # another class?
     task = Surrender::Task.load_yaml(yaml).first
     task.should have(2).messages
   end
@@ -76,6 +78,7 @@ describe Surrender::Task do
     @task.pick_ripe_messages!.should include(msg1,msg2)
   end
   
+  # TODO: no, it should return nil. Fuck exceptions.
   it "should raise an exception when picking a message from an empty queue" do
     lambda {@task.pick_ripe_messages!}.should raise_error Surrender::Task::MessageQueueEmpty
   end
@@ -86,7 +89,7 @@ describe Surrender::Task do
     @task.message_queue.should_not include(@ripe_msg)
   end
   
-  it "should return task after adding messages" do
+  it "should return task when adding messages" do
     exp = @task.add_message @ripe_msg
     exp.should be_instance_of Surrender::Task
   end
