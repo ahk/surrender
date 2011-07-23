@@ -1,9 +1,9 @@
-require 'spec'
+require 'rspec'
 require File.dirname(__FILE__) + '/../lib/surrender'
 
 require 'time'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   # config details here
   # using non-default mocks/stubs
   def sooner_time
